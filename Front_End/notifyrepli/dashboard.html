@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Notify</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+    <!-- Reminder Modal -->
+    <div id="reminderModal" class="modal">
+        <div class="modal-content reminder-content">
+            <span class="close">&times;</span>
+            <h2>🔔 Task Reminders</h2>
+            <div id="reminderList"></div>
+        </div>
+    </div>
+
+    <nav class="navbar dashboard-nav">
+        <div class="logo">📢 Notify</div>
+        <div class="nav-info">
+            <span id="welcomeUser">Welcome, User</span>
+            <button onclick="logout()" class="btn btn-secondary">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="stats-card">
+                <h3>Quick Stats</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Total Tasks</span>
+                    <span id="totalTasks" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Pending</span>
+                    <span id="pendingTasks" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Completed</span>
+                    <span id="completedTasks" class="stat-value">0</span>
+                </div>
+            </div>
+            
+            <div class="category-filter">
+                <h3>Categories</h3>
+                <button onclick="filterTasks('all')" class="filter-btn active">All</button>
+                <button onclick="filterTasks('Study')" class="filter-btn">📚 Study</button>
+                <button onclick="filterTasks('Work')" class="filter-btn">💼 Work</button>
+                <button onclick="filterTasks('Travel')" class="filter-btn">✈️ Travel</button>
+                <button onclick="filterTasks('Market')" class="filter-btn">🛒 Market</button>
+                <button onclick="filterTasks('Daily')" class="filter-btn">📅 Daily</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="task-form-section">
+                <h2>Add New Task</h2>
+                <form id="taskForm" class="task-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskTitle">Task Title</label>
+                            <input type="text" id="taskTitle" required placeholder="What needs to be done?">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskCategory">Category</label>
+                            <select id="taskCategory" required>
+                                <option value="Study">📚 Study</option>
+                                <option value="Work">💼 Work</option>
+                                <option value="Travel">✈️ Travel</option>
+                                <option value="Market">🛒 Market</option>
+                                <option value="Daily">📅 Daily Activities</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taskDescription">Description</label>
+                        <textarea id="taskDescription" rows="2" placeholder="Add details..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskDate">Date</label>
+                            <input type="date" id="taskDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskTime">Time</label>
+                            <input type="time" id="taskTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskPriority">Priority</label>
+                            <select id="taskPriority">
+                                <option value="High">🔴 High</option>
+                                <option value="Medium" selected>🟡 Medium</option>
+                                <option value="Low">🟢 Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">➕ Add Task</button>
+                </form>
+            </div>
+
+            <div class="tasks-section">
+                <div class="section-header">
+                    <h2>Your Tasks</h2>
+                    <div class="view-toggle">
+                        <button onclick="loadTasks()" class="btn btn-small">🔄 Refresh</button>
+                    </div>
+                </div>
+                
+                <div id="tasksContainer" class="tasks-container">
+                    <!-- Tasks will be loaded here -->
+                    <div class="empty-state">
+                        <p>No tasks yet. Add your first task above!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Set today's date as default
+        document.getElementById('taskDate').valueAsDate = new Date();
+        
+        // Load dashboard data
+        loadDashboard();
+        
+        // Form submission
+        document.getElementById('taskForm').addEventListener('submit', handleAddTask);
+        
+        // Start reminder checker
+        setInterval(checkReminders, 30000); // Check every 30 seconds
+        checkReminders(); // Initial check
+    </script>
+</body>
+</html>
